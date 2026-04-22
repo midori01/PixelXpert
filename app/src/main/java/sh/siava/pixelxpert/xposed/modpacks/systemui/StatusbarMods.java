@@ -983,38 +983,50 @@ public class StatusbarMods extends XposedModPack {
 		}
 	}
 
-	private void updateVoData(boolean force) {
-		boolean voWifiAvailable = (Boolean) callMethod(SystemUtils.TelephonyManager(), "isWifiCallingAvailable");
-		boolean volteStateAvailable = (Boolean) callMethod(SystemUtils.TelephonyManager(), "isVolteAvailable");
+    private void updateVoData(boolean force) {
+        Object tm = SystemUtils.TelephonyManager();
+        if (tm == null) return;
 
-		if (lastVolteAvailable != volteStateAvailable || force) {
-			lastVolteAvailable = volteStateAvailable;
-			if (volteStateAvailable && VolteIconEnabled) {
-				mPhoneStatusbarView.post(() -> {
-					try {
-						callMethod(mStatusBarIconController, "setIcon", VO_LTE_SLOT, volteStatusbarIconHolder);
-					} catch (Exception ignored) {}
-				});
-			} else {
-				removeSBIconSlot(VO_LTE_SLOT);
-			}
-		}
+        boolean voWifiAvailable = (Boolean) callMethod(tm, "isWifiCallingAvailable");
+        boolean volteStateAvailable = (Boolean) callMethod(tm, "isVolteAvailable");
 
-		if (lastVowifiAvailable != voWifiAvailable || force) {
-			lastVowifiAvailable = voWifiAvailable;
-			if (voWifiAvailable && VowifiIconEnabled) {
-				mPhoneStatusbarView.post(() -> {
-					try {
-						callMethod(mStatusBarIconController, "setIcon", VO_WIFI_SLOT, vowifiStatusbarIconHolder);
-					} catch (Exception ignored) {						
+        try {
+            boolean isImsRegistered = (Boolean) callMethod(tm, "isImsRegistered");
+            int networkType = (int) callMethod(tm, "getDataNetworkType");
+            boolean isNR = (networkType == 20);
 
-					}
-				});
-			} else {
-				removeSBIconSlot(VO_WIFI_SLOT);
-			}
-		}
-	}
+            if (isNR && isImsRegistered) {
+                volteStateAvailable = true;
+            }
+        } catch (Throwable ignored) {
+        }
+
+        if (lastVolteAvailable != volteStateAvailable || force) {
+            lastVolteAvailable = volteStateAvailable;
+            if (volteStateAvailable && VolteIconEnabled) {
+                mPhoneStatusbarView.post(() -> {
+                    try {
+                        callMethod(mStatusBarIconController, "setIcon", VO_LTE_SLOT, volteStatusbarIconHolder);
+                    } catch (Exception ignored) {}
+                });
+            } else {
+                removeSBIconSlot(VO_LTE_SLOT);
+            }
+        }
+
+        if (lastVowifiAvailable != voWifiAvailable || force) {
+            lastVowifiAvailable = voWifiAvailable;
+            if (voWifiAvailable && VowifiIconEnabled) {
+                mPhoneStatusbarView.post(() -> {
+                    try {
+                        callMethod(mStatusBarIconController, "setIcon", VO_WIFI_SLOT, vowifiStatusbarIconHolder);
+                    } catch (Exception ignored) {}
+                });
+            } else {
+                removeSBIconSlot(VO_WIFI_SLOT);
+            }
+        }
+    }
 
 	private void removeSBIconSlot(String slot) {
 		if (mPhoneStatusbarView == null) return; //probably it's too soon to have a statusbar
