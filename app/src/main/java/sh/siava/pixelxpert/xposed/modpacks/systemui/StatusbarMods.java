@@ -170,6 +170,7 @@ public class StatusbarMods extends XposedModPack {
 	private Object vonrStatusbarIconHolder;
 	private boolean telephonyCallbackRegistered = false;
 	private boolean lastVolteAvailable = false;
+	private boolean lastIsNR = false;
 	private final serverStateCallback voDataCallback = new serverStateCallback();
 	//endregion
 
@@ -1003,8 +1004,10 @@ public class StatusbarMods extends XposedModPack {
         } catch (Throwable ignored) {
         }
 
-        if (lastVolteAvailable != volteStateAvailable || force) {
+        if (lastVolteAvailable != volteStateAvailable || lastIsNR != isNR || force) {
             lastVolteAvailable = volteStateAvailable;
+            lastIsNR = isNR;
+            
             if (volteStateAvailable && VolteIconEnabled) {
                 Object iconToSet = isNR ? vonrStatusbarIconHolder : volteStatusbarIconHolder;
                 mPhoneStatusbarView.post(() -> {
