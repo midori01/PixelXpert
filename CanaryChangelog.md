@@ -1,3 +1,5 @@
+**canary-494**  
+  
 **canary-493**  
 - Fixing kill forground app (by pushing nexus launcher to work the way it should)  
   
