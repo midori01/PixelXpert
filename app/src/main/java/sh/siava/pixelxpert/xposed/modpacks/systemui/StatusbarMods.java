@@ -167,6 +167,7 @@ public class StatusbarMods extends XposedModPack {
 	private ReflectedClass StatusBarIconClass;
 	private ReflectedClass StatusBarIconHolderClass;
 	private Object volteStatusbarIconHolder;
+	private Object vonrStatusbarIconHolder;
 	private boolean telephonyCallbackRegistered = false;
 	private boolean lastVolteAvailable = false;
 	private final serverStateCallback voDataCallback = new serverStateCallback();
@@ -940,28 +941,28 @@ public class StatusbarMods extends XposedModPack {
 	//endregion
 
 	//region vo_data related
-	private void initVoData() {
-		try {
-			if (!telephonyCallbackRegistered) {
+    private void initVoData() {
+        try {
+            if (!telephonyCallbackRegistered) {
+                Icon volteIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_volte);
+                Object volteStatusbarIcon = getStatusbarIconFor(volteIcon, VO_LTE_SLOT);
+                volteStatusbarIconHolder = getStatusbarIconHolderFor(volteStatusbarIcon);
 
-				Icon volteIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_volte);
-				Object volteStatusbarIcon = getStatusbarIconFor(volteIcon, VO_LTE_SLOT);
-				volteStatusbarIconHolder = getStatusbarIconHolderFor(volteStatusbarIcon);
+                Icon vonrIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_vonr);
+                Object vonrStatusbarIcon = getStatusbarIconFor(vonrIcon, VO_LTE_SLOT);
+                vonrStatusbarIconHolder = getStatusbarIconHolderFor(vonrStatusbarIcon);
 
-				Icon vowifiIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_vowifi);
-				Object vowifiStatusbarIcon = getStatusbarIconFor(vowifiIcon, VO_WIFI_SLOT);
-				vowifiStatusbarIconHolder = getStatusbarIconHolderFor(vowifiStatusbarIcon);
+                Icon vowifiIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_vowifi);
+                Object vowifiStatusbarIcon = getStatusbarIconFor(vowifiIcon, VO_WIFI_SLOT);
+                vowifiStatusbarIconHolder = getStatusbarIconHolderFor(vowifiStatusbarIcon);
 
-				//noinspection DataFlowIssue
-				SystemUtils.TelephonyManager().registerTelephonyCallback(voDataExec, voDataCallback);
-				telephonyCallbackRegistered = true;
-			}
-		} catch (Exception ignored) {						
-
-		}
-
-		updateVoData(true);
-	}
+                SystemUtils.TelephonyManager().registerTelephonyCallback(voDataExec, voDataCallback);
+                telephonyCallbackRegistered = true;
+            }
+        } catch (Exception ignored) {
+        }
+        updateVoData(true);
+    }
 
 	private void removeVoDataCallback() {
 		try {
@@ -989,11 +990,12 @@ public class StatusbarMods extends XposedModPack {
 
         boolean voWifiAvailable = (Boolean) callMethod(tm, "isWifiCallingAvailable");
         boolean volteStateAvailable = (Boolean) callMethod(tm, "isVolteAvailable");
+        boolean isNR = false;
 
         try {
             boolean isImsRegistered = (Boolean) callMethod(tm, "isImsRegistered");
             int networkType = (int) callMethod(tm, "getDataNetworkType");
-            boolean isNR = (networkType == 20);
+            isNR = (networkType == 20);
 
             if (isNR && isImsRegistered) {
                 volteStateAvailable = true;
@@ -1004,10 +1006,12 @@ public class StatusbarMods extends XposedModPack {
         if (lastVolteAvailable != volteStateAvailable || force) {
             lastVolteAvailable = volteStateAvailable;
             if (volteStateAvailable && VolteIconEnabled) {
+                Object iconToSet = isNR ? vonrStatusbarIconHolder : volteStatusbarIconHolder;
                 mPhoneStatusbarView.post(() -> {
                     try {
-                        callMethod(mStatusBarIconController, "setIcon", VO_LTE_SLOT, volteStatusbarIconHolder);
-                    } catch (Exception ignored) {}
+                        callMethod(mStatusBarIconController, "setIcon", VO_LTE_SLOT, iconToSet);
+                    } catch (Exception ignored) {
+                    }
                 });
             } else {
                 removeSBIconSlot(VO_LTE_SLOT);
@@ -1020,7 +1024,8 @@ public class StatusbarMods extends XposedModPack {
                 mPhoneStatusbarView.post(() -> {
                     try {
                         callMethod(mStatusBarIconController, "setIcon", VO_WIFI_SLOT, vowifiStatusbarIconHolder);
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 });
             } else {
                 removeSBIconSlot(VO_WIFI_SLOT);
