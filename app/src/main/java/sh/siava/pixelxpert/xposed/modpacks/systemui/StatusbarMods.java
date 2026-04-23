@@ -995,10 +995,16 @@ public class StatusbarMods extends XposedModPack {
 
         try {
             boolean isImsRegistered = (Boolean) callMethod(tm, "isImsRegistered");
-            int networkType = (int) callMethod(tm, "getDataNetworkType");
-            isNR = (networkType == 20);
+            
+            int dataNetworkType = (int) callMethod(tm, "getDataNetworkType");
+            int voiceNetworkType = 0;
+            try {
+                voiceNetworkType = (int) callMethod(tm, "getVoiceNetworkType");
+            } catch (Throwable ignored) {}
 
-            if (isNR && isImsRegistered) {
+            isNR = (dataNetworkType == 20 || voiceNetworkType == 20);
+
+            if (isImsRegistered && !voWifiAvailable) {
                 volteStateAvailable = true;
             }
         } catch (Throwable ignored) {
@@ -1007,7 +1013,6 @@ public class StatusbarMods extends XposedModPack {
         if (lastVolteAvailable != volteStateAvailable || lastIsNR != isNR || force) {
             lastVolteAvailable = volteStateAvailable;
             lastIsNR = isNR;
-            
             if (volteStateAvailable && VolteIconEnabled) {
                 Object iconToSet = isNR ? vonrStatusbarIconHolder : volteStatusbarIconHolder;
                 mPhoneStatusbarView.post(() -> {
