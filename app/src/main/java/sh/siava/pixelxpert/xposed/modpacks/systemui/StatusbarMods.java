@@ -962,8 +962,42 @@ public class StatusbarMods extends XposedModPack {
             }
         } catch (Exception ignored) {
         }
+        
+        adjustIconSlotsOrder();
+        
         updateVoData(true);
     }
+
+	private void adjustIconSlotsOrder() {
+		try {
+			if (mStatusBarIconController == null) return;
+
+			Object iconList = null;
+			for (java.lang.reflect.Field f : mStatusBarIconController.getClass().getDeclaredFields()) {
+				if (f.getType().getName().endsWith("StatusBarIconList")) {
+					f.setAccessible(true);
+					iconList = f.get(mStatusBarIconController);
+					break;
+				}
+			}
+
+			if (iconList != null) {
+				@SuppressWarnings("unchecked")
+				ArrayList<String> slots = (ArrayList<String>) getObjectField(iconList, "mSlots");
+				
+				if (slots != null && slots.contains("mobile")) {
+					slots.remove(VO_LTE_SLOT);
+					slots.remove(VO_WIFI_SLOT);
+					
+					int mobileIndex = slots.indexOf("mobile");
+					
+					slots.add(mobileIndex, VO_LTE_SLOT);
+					slots.add(mobileIndex, VO_WIFI_SLOT); 
+				}
+			}
+		} catch (Throwable ignored) {
+		}
+	}
 
 	private void removeVoDataCallback() {
 		try {
