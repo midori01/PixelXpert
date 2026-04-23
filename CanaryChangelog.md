@@ -1,4 +1,5 @@
 **canary-501**  
+- VoLTE/VoNR icons are now properly aligned next to the 4G/5G signal indicator instead of the far left. (Midori)
   
 **canary-500**  
 - Fix VoNR icon incorrectly showing on 5G NSA networks. (Midori)
