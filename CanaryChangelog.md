@@ -1,5 +1,5 @@
 **canary-502**  
-- Fix
+- Completely overhauled the status bar icon injection logic. VoLTE/VoNR/VoWiFi icons are now intelligently inserted right next to the cellular signal indicator. (Midori)
   
 **canary-501**  
 - VoLTE/VoNR icons are now properly aligned next to the 4G/5G signal indicator instead of the far left. (Midori)
