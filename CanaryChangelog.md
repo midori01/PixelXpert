@@ -1,12 +1,17 @@
 **canary-498**  
+- Modified the app update source. (Midori)
   
 **canary-497**  
+- Modified the module update source. (Midori)
   
 **canary-496**  
+- Fix VoLTE/VoNR icons not updating during 4G/5G transitions. (Midori)
   
 **canary-495**  
+- Add display logic for the VoNR icon. (Midori)
   
 **canary-494**  
+- ​Fix VoLTE icon missing under 5G network. (Midori)
   
 **canary-493**  
 - Fixing kill forground app (by pushing nexus launcher to work the way it should)  
