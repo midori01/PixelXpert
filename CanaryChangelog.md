@@ -1,4 +1,5 @@
 **canary-499**  
+- VoLTE/VoNR icons now stay visible during Wi-Fi connections for continuous status monitoring. (Midori)
   
 **canary-498**  
 - Modified the app update source. (Midori)
