@@ -982,17 +982,72 @@ public class StatusbarMods extends XposedModPack {
 			}
 
 			if (iconList != null) {
-				@SuppressWarnings("unchecked")
-				ArrayList<String> slots = (ArrayList<String>) getObjectField(iconList, "mSlots");
-				
-				if (slots != null && slots.contains("mobile")) {
-					slots.remove(VO_LTE_SLOT);
-					slots.remove(VO_WIFI_SLOT);
+				ArrayList<?> slots = (ArrayList<?>) getObjectField(iconList, "mSlots");
+				if (slots == null || slots.isEmpty()) return;
+
+				boolean isString = slots.get(0) instanceof String;
+				int targetIndex = -1;
+
+				if (isString) {
+					@SuppressWarnings("unchecked")
+					ArrayList<String> stringSlots = (ArrayList<String>) slots;
+					targetIndex = stringSlots.indexOf("mobile");
+					if (targetIndex == -1) targetIndex = stringSlots.indexOf("wifi");
 					
-					int mobileIndex = slots.indexOf("mobile");
+					if (targetIndex != -1 && !stringSlots.contains(VO_LTE_SLOT)) {
+						stringSlots.add(targetIndex, VO_WIFI_SLOT);
+						stringSlots.add(targetIndex, VO_LTE_SLOT);
+					}
+				} else {
+					for (int i = 0; i < slots.size(); i++) {
+						Object slotObj = slots.get(i);
+						String slotName = (String) getObjectField(slotObj, "mName");
+						if ("mobile".equals(slotName)) {
+							targetIndex = i;
+							break;
+						}
+					}
 					
-					slots.add(mobileIndex, VO_LTE_SLOT);
-					slots.add(mobileIndex, VO_WIFI_SLOT); 
+					if (targetIndex == -1) {
+						for (int i = 0; i < slots.size(); i++) {
+							Object slotObj = slots.get(i);
+							String slotName = (String) getObjectField(slotObj, "mName");
+							if ("wifi".equals(slotName)) {
+								targetIndex = i;
+								break;
+							}
+						}
+					}
+
+					if (targetIndex != -1) {
+						for (Object slotObj : slots) {
+							String name = (String) getObjectField(slotObj, "mName");
+							if (VO_LTE_SLOT.equals(name)) return;
+						}
+
+						Class<?> slotClass = slots.get(0).getClass();
+						Object volteSlotObj;
+						Object vowifiSlotObj;
+						
+						try {
+							java.lang.reflect.Constructor<?> constructor = slotClass.getDeclaredConstructor(String.class, StatusBarIconHolderClass.getClazz());
+							constructor.setAccessible(true);
+							volteSlotObj = constructor.newInstance(VO_LTE_SLOT, null);
+							vowifiSlotObj = constructor.newInstance(VO_WIFI_SLOT, null);
+						} catch (Throwable ignored) {
+							volteSlotObj = ObjenesisHelper.newInstance(slotClass);
+							setObjectField(volteSlotObj, "mName", VO_LTE_SLOT);
+							
+							vowifiSlotObj = ObjenesisHelper.newInstance(slotClass);
+							setObjectField(vowifiSlotObj, "mName", VO_WIFI_SLOT);
+						}
+
+						@SuppressWarnings("unchecked")
+						ArrayList<Object> objSlots = (ArrayList<Object>) slots;
+						
+						objSlots.add(targetIndex, vowifiSlotObj);
+						objSlots.add(targetIndex, volteSlotObj);
+					}
 				}
 			}
 		} catch (Throwable ignored) {
