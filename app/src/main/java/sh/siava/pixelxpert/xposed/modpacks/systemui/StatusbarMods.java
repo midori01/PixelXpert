@@ -1002,7 +1002,11 @@ public class StatusbarMods extends XposedModPack {
                 voiceNetworkType = (int) callMethod(tm, "getVoiceNetworkType");
             } catch (Throwable ignored) {}
 
-            isNR = (dataNetworkType == 20 || voiceNetworkType == 20);
+            if (voiceNetworkType != 0) {
+                isNR = (voiceNetworkType == 20);
+            } else {
+                isNR = (dataNetworkType == 20);
+            }
 
             if (isImsRegistered && !voWifiAvailable) {
                 volteStateAvailable = true;
