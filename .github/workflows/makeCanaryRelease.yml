@@ -62,7 +62,7 @@ jobs:
         tag: 'canary_builds'
         name: 'Latest Canary'
         omitBodyDuringUpdate: true
-        prerelease: true
+        prerelease: false
         allowUpdates: true
         replacesArtifacts: true
         draft: false
