@@ -1,4 +1,5 @@
 **canary-500**  
+- Fix VoNR icon incorrectly showing on 5G NSA networks. (Midori)
   
 **canary-499**  
 - VoLTE/VoNR icons now stay visible during Wi-Fi connections for continuous status monitoring. (Midori)
