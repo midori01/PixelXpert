@@ -65,7 +65,7 @@ public class ObjectTools {
 			unit = showInBits ? "Mb" : "MB";
 			formattedData = decimalFormat.format(bytes / (float) MEGA);
 		} else if (bytes >= 10 * MEGA) {
-			decimalFormat = new DecimalFormat("00.0");
+			decimalFormat = new DecimalFormat("00");
 			unit = showInBits ? "Mb" : "MB";
 			formattedData = decimalFormat.format(bytes / (float) MEGA);
 		} else if (bytes >= MEGA) {
@@ -77,7 +77,7 @@ public class ObjectTools {
 			unit = showInBits ? "Kb" : "KB";
 			formattedData = decimalFormat.format(bytes / (float) KILO);
 		} else if (bytes >= 10 * KILO) {
-			decimalFormat = new DecimalFormat("00.0");
+			decimalFormat = new DecimalFormat("00");
 			unit = showInBits ? "Kb" : "KB";
 			formattedData = decimalFormat.format(bytes / (float) KILO);
 		} else {
