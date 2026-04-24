@@ -1,3 +1,5 @@
+**canary-504**  
+  
 **canary-503**  
 - Updated decimal format for data representation to use one decimal place. Added a check to handle zero values for formatted data. (Midori)
   
