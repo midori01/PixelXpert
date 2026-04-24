@@ -1,3 +1,5 @@
+**canary-503**  
+  
 **canary-502**  
 - Completely overhauled the status bar icon injection logic. VoLTE/VoNR/VoWiFi icons are now intelligently inserted right next to the cellular signal indicator. (Midori)
   
