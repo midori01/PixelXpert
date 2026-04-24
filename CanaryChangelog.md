@@ -1,4 +1,5 @@
 **canary-503**  
+- Updated decimal format for data representation to use one decimal place. Added a check to handle zero values for formatted data. (Midori)
   
 **canary-502**  
 - Completely overhauled the status bar icon injection logic. VoLTE/VoNR/VoWiFi icons are now intelligently inserted right next to the cellular signal indicator. (Midori)
