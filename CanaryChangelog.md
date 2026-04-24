@@ -1,4 +1,5 @@
 **canary-504**  
+- Updated decimal formatting for byte conversion to remove decimal places in certain conditions. (Midori)
   
 **canary-503**  
 - Updated decimal format for data representation to use one decimal place. Added a check to handle zero values for formatted data. (Midori)
