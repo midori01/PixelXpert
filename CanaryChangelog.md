@@ -1,35 +1,35 @@
-**canary-504**  
-- Updated decimal formatting for byte conversion to remove decimal places in certain conditions. (Midori)
+**​canary-504**  
+- ​Midori: Refined decimal formatting for byte conversion; implemented conditional logic to suppress decimal places for improved UI clarity.
   
-**canary-503**  
-- Updated decimal format for data representation to use one decimal place. Added a check to handle zero values for formatted data. (Midori)
+**​canary-503**  
+- ​Midori: Standardized data representation to use a single decimal place; implemented a validation check to handle zero-value edge cases.
   
-**canary-502**  
-- Completely overhauled the status bar icon injection logic. VoLTE/VoNR/VoWiFi icons are now intelligently inserted right next to the cellular signal indicator. (Midori)
+**​canary-502**  
+- ​Midori: Major overhaul of the status bar icon injection logic. IMS service icons (VoLTE/VoNR/VoWiFi) are now dynamically anchored to the cellular signal indicator for a native-level integration.
   
-**canary-501**  
-- VoLTE/VoNR icons are now properly aligned next to the 4G/5G signal indicator instead of the far left. (Midori)
+​**canary-501**  
+- Midori: Improved UI alignment; VoLTE/VoNR icons are now correctly positioned adjacent to the 4G/5G signal indicators instead of the far left.
   
-**canary-500**  
-- Fix VoNR icon incorrectly showing on 5G NSA networks. (Midori)
+**​canary-500**  
+- ​Midori: Fixed a signaling logic error where the VoNR icon would incorrectly display on 5G NSA (Non-Standalone) networks.
   
-**canary-499**  
-- VoLTE/VoNR icons now stay visible during Wi-Fi connections for continuous status monitoring. (Midori)
+**​canary-499**  
+- Midori: ​Enhanced status persistence; VoLTE/VoNR icons now remain visible during active Wi-Fi sessions for continuous IMS registration monitoring.
   
-**canary-498**  
-- Modified the app update source. (Midori)
+**​canary-498**  
+- ​Midori: Migrated the application update distribution channel.
   
-**canary-497**  
-- Modified the module update source. (Midori)
+**​canary-497**  
+- Midori: ​Updated the module's remote update source for improved reliability.
   
-**canary-496**  
-- Fix VoLTE/VoNR icons not updating during 4G/5G transitions. (Midori)
+**​canary-496**  
+- ​Midori: Resolved a state synchronization issue where VoLTE/VoNR icons failed to update during seamless 4G/5G RAT transitions.
   
-**canary-495**  
-- Add display logic for the VoNR icon. (Midori)
+**​canary-495**  
+- ​Midori: Implemented dedicated display logic and assets for the VoNR (Voice over New Radio) indicator.
   
-**canary-494**  
-- ​Fix VoLTE icon missing under 5G network. (Midori)
+**​canary-494**  
+- ​Midori: Fixed a regression where the VoLTE icon was missing specifically under 5G network environments.
   
 **canary-493**  
 - Fixing kill forground app (by pushing nexus launcher to work the way it should)  
