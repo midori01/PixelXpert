@@ -6,6 +6,7 @@ on:
       - 'canary'
     paths:
       - '.github/edit2MakeNewCanary'
+  workflow_dispatch:
 
 jobs:
   build:
