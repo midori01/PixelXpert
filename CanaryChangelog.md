@@ -1,4 +1,5 @@
 **canary-505**  
+- (Sync official canary-494) A17b4 - Fixed physical button remap when screen is off
   
 **​canary-504**  
 - ​Midori: Refined decimal formatting for byte conversion; implemented conditional logic to suppress decimal places for improved UI clarity.
