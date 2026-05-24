@@ -1,8 +1,8 @@
 id=PixelXpert
 name=Pixel Xpert
-version=canary-495
-versionCode=495
-author=Pixel Xpert Team
+version=canary-505
+versionCode=505
+author=Pixel Xpert Team, Midori
 description=Xposed based module for customizations on Pixel roms. Android 13+
-updateJson=https://raw.githubusercontent.com/siavash79/PixelXpert/canary/MagiskModuleUpdate_Xposed.json
+updateJson=https://raw.githubusercontent.com/midori01/PixelXpert/canary/MagiskModuleUpdate_Xposed.json
 minMagisk=25000

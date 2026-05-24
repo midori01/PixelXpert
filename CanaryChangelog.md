@@ -1,10 +1,38 @@
-**canary-495**  
-- A17QPR1b3: Fixed statusbar gestures  
-- A17QPR1b3: Fixed Screen gestures and related system UI crash  
-- Added option to hide navigation bar insets (Thanks to eXtreames@Github)  
+**canary-505**  
+- (Sync official canary-494) A17b4 - Fixed physical button remap when screen is off
   
-**canary-494**  
-- A17b4 - Fixed physical button remap when screen is off  
+**​canary-504**  
+- ​Midori: Refined decimal formatting for byte conversion; implemented conditional logic to suppress decimal places for improved UI clarity.
+  
+**​canary-503**  
+- ​Midori: Standardized data representation to use a single decimal place; implemented a validation check to handle zero-value edge cases.
+  
+**​canary-502**  
+- ​Midori: Major overhaul of the status bar icon injection logic. IMS service icons (VoLTE/VoNR/VoWiFi) are now dynamically anchored to the cellular signal indicator for a native-level integration.
+  
+​**canary-501**  
+- Midori: Improved UI alignment; VoLTE/VoNR icons are now correctly positioned adjacent to the 4G/5G signal indicators instead of the far left.
+  
+**​canary-500**  
+- ​Midori: Fixed a signaling logic error where the VoNR icon would incorrectly display on 5G NSA (Non-Standalone) networks.
+  
+**​canary-499**  
+- Midori: ​Enhanced status persistence; VoLTE/VoNR icons now remain visible during active Wi-Fi sessions for continuous IMS registration monitoring.
+  
+**​canary-498**  
+- ​Midori: Migrated the application update distribution channel.
+  
+**​canary-497**  
+- Midori: ​Updated the module's remote update source for improved reliability.
+  
+**​canary-496**  
+- ​Midori: Resolved a state synchronization issue where VoLTE/VoNR icons failed to update during seamless 4G/5G RAT transitions.
+  
+**​canary-495**  
+- ​Midori: Implemented dedicated display logic and assets for the VoNR (Voice over New Radio) indicator.
+  
+**​canary-494**  
+- ​Midori: Fixed a regression where the VoLTE icon was missing specifically under 5G network environments.
   
 **canary-493**  
 - Fixing kill forground app (by pushing nexus launcher to work the way it should)  
