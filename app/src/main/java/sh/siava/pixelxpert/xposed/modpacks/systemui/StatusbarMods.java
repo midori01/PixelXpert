@@ -169,8 +169,10 @@ public class StatusbarMods extends XposedModPack {
 	private ReflectedClass StatusBarIconClass;
 	private ReflectedClass StatusBarIconHolderClass;
 	private Object volteStatusbarIconHolder;
+	private Object vonrStatusbarIconHolder;
 	private boolean telephonyCallbackRegistered = false;
 	private boolean lastVolteAvailable = false;
+	private boolean lastIsNR = false;
 	private final serverStateCallback voDataCallback = new serverStateCallback();
 	//endregion
 
@@ -1021,27 +1023,116 @@ public class StatusbarMods extends XposedModPack {
 	//endregion
 
 	//region vo_data related
-	private void initVoData() {
+    private void initVoData() {
+        try {
+            if (!telephonyCallbackRegistered) {
+                Icon volteIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_volte);
+                Object volteStatusbarIcon = getStatusbarIconFor(volteIcon, VO_LTE_SLOT);
+                volteStatusbarIconHolder = getStatusbarIconHolderFor(volteStatusbarIcon);
+
+                Icon vonrIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_vonr);
+                Object vonrStatusbarIcon = getStatusbarIconFor(vonrIcon, VO_LTE_SLOT);
+                vonrStatusbarIconHolder = getStatusbarIconHolderFor(vonrStatusbarIcon);
+
+                Icon vowifiIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_vowifi);
+                Object vowifiStatusbarIcon = getStatusbarIconFor(vowifiIcon, VO_WIFI_SLOT);
+                vowifiStatusbarIconHolder = getStatusbarIconHolderFor(vowifiStatusbarIcon);
+
+                SystemUtils.TelephonyManager().registerTelephonyCallback(voDataExec, voDataCallback);
+                telephonyCallbackRegistered = true;
+            }
+        } catch (Exception ignored) {
+        }
+        
+        adjustIconSlotsOrder();
+        
+        updateVoData(true);
+    }
+
+	private void adjustIconSlotsOrder() {
 		try {
-			if (!telephonyCallbackRegistered) {
+			if (mStatusBarIconController == null) return;
 
-				Icon volteIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_volte);
-				Object volteStatusbarIcon = getStatusbarIconFor(volteIcon, VO_LTE_SLOT);
-				volteStatusbarIconHolder = getStatusbarIconHolderFor(volteStatusbarIcon);
-
-				Icon vowifiIcon = Icon.createWithResource(BuildConfig.APPLICATION_ID, R.drawable.ic_vowifi);
-				Object vowifiStatusbarIcon = getStatusbarIconFor(vowifiIcon, VO_WIFI_SLOT);
-				vowifiStatusbarIconHolder = getStatusbarIconHolderFor(vowifiStatusbarIcon);
-
-				//noinspection DataFlowIssue
-				SystemUtils.TelephonyManager().registerTelephonyCallback(voDataExec, voDataCallback);
-				telephonyCallbackRegistered = true;
+			Object iconList = null;
+			for (java.lang.reflect.Field f : mStatusBarIconController.getClass().getDeclaredFields()) {
+				if (f.getType().getName().endsWith("StatusBarIconList")) {
+					f.setAccessible(true);
+					iconList = f.get(mStatusBarIconController);
+					break;
+				}
 			}
-		} catch (Exception ignored) {						
 
+			if (iconList != null) {
+				ArrayList<?> slots = (ArrayList<?>) getObjectField(iconList, "mSlots");
+				if (slots == null || slots.isEmpty()) return;
+
+				boolean isString = slots.get(0) instanceof String;
+				int targetIndex = -1;
+
+				if (isString) {
+					@SuppressWarnings("unchecked")
+					ArrayList<String> stringSlots = (ArrayList<String>) slots;
+					targetIndex = stringSlots.indexOf("mobile");
+					if (targetIndex == -1) targetIndex = stringSlots.indexOf("wifi");
+					
+					if (targetIndex != -1 && !stringSlots.contains(VO_LTE_SLOT)) {
+						stringSlots.add(targetIndex, VO_WIFI_SLOT);
+						stringSlots.add(targetIndex, VO_LTE_SLOT);
+					}
+				} else {
+					for (int i = 0; i < slots.size(); i++) {
+						Object slotObj = slots.get(i);
+						String slotName = (String) getObjectField(slotObj, "mName");
+						if ("mobile".equals(slotName)) {
+							targetIndex = i;
+							break;
+						}
+					}
+					
+					if (targetIndex == -1) {
+						for (int i = 0; i < slots.size(); i++) {
+							Object slotObj = slots.get(i);
+							String slotName = (String) getObjectField(slotObj, "mName");
+							if ("wifi".equals(slotName)) {
+								targetIndex = i;
+								break;
+							}
+						}
+					}
+
+					if (targetIndex != -1) {
+						for (Object slotObj : slots) {
+							String name = (String) getObjectField(slotObj, "mName");
+							if (VO_LTE_SLOT.equals(name)) return;
+						}
+
+						Class<?> slotClass = slots.get(0).getClass();
+						Object volteSlotObj;
+						Object vowifiSlotObj;
+						
+						try {
+							java.lang.reflect.Constructor<?> constructor = slotClass.getDeclaredConstructor(String.class, StatusBarIconHolderClass.getClazz());
+							constructor.setAccessible(true);
+							volteSlotObj = constructor.newInstance(VO_LTE_SLOT, null);
+							vowifiSlotObj = constructor.newInstance(VO_WIFI_SLOT, null);
+						} catch (Throwable ignored) {
+							volteSlotObj = ObjenesisHelper.newInstance(slotClass);
+							setObjectField(volteSlotObj, "mName", VO_LTE_SLOT);
+							
+							vowifiSlotObj = ObjenesisHelper.newInstance(slotClass);
+							setObjectField(vowifiSlotObj, "mName", VO_WIFI_SLOT);
+						}
+
+						@SuppressWarnings("unchecked")
+						ArrayList<Object> objSlots = (ArrayList<Object>) slots;
+						
+						objSlots.add(targetIndex, vowifiSlotObj);
+						objSlots.add(targetIndex, volteSlotObj);
+					}
+				}
+			}
+		} catch (Throwable ignored) {
 		}
-
-		updateVoData(true);
 	}
 
 	private void removeVoDataCallback() {
@@ -1064,38 +1155,65 @@ public class StatusbarMods extends XposedModPack {
 		}
 	}
 
-	private void updateVoData(boolean force) {
-		boolean voWifiAvailable = (Boolean) callMethod(SystemUtils.TelephonyManager(), "isWifiCallingAvailable");
-		boolean volteStateAvailable = (Boolean) callMethod(SystemUtils.TelephonyManager(), "isVolteAvailable");
+    private void updateVoData(boolean force) {
+        Object tm = SystemUtils.TelephonyManager();
+        if (tm == null) return;
 
-		if (lastVolteAvailable != volteStateAvailable || force) {
-			lastVolteAvailable = volteStateAvailable;
-			if (volteStateAvailable && VolteIconEnabled) {
-				mPhoneStatusbarView.post(() -> {
-					try {
-						callMethod(mStatusBarIconController, "setIcon", VO_LTE_SLOT, volteStatusbarIconHolder);
-					} catch (Exception ignored) {}
-				});
-			} else {
-				removeSBIconSlot(VO_LTE_SLOT);
-			}
-		}
+        boolean voWifiAvailable = (Boolean) callMethod(tm, "isWifiCallingAvailable");
+        boolean volteStateAvailable = (Boolean) callMethod(tm, "isVolteAvailable");
+        boolean isNR = false;
 
-		if (lastVowifiAvailable != voWifiAvailable || force) {
-			lastVowifiAvailable = voWifiAvailable;
-			if (voWifiAvailable && VowifiIconEnabled) {
-				mPhoneStatusbarView.post(() -> {
-					try {
-						callMethod(mStatusBarIconController, "setIcon", VO_WIFI_SLOT, vowifiStatusbarIconHolder);
-					} catch (Exception ignored) {						
+        try {
+            boolean isImsRegistered = (Boolean) callMethod(tm, "isImsRegistered");
+            
+            int dataNetworkType = (int) callMethod(tm, "getDataNetworkType");
+            int voiceNetworkType = 0;
+            try {
+                voiceNetworkType = (int) callMethod(tm, "getVoiceNetworkType");
+            } catch (Throwable ignored) {}
 
-					}
-				});
-			} else {
-				removeSBIconSlot(VO_WIFI_SLOT);
-			}
-		}
-	}
+            if (voiceNetworkType != 0) {
+                isNR = (voiceNetworkType == 20);
+            } else {
+                isNR = (dataNetworkType == 20);
+            }
+
+            if (isImsRegistered && !voWifiAvailable) {
+                volteStateAvailable = true;
+            }
+        } catch (Throwable ignored) {
+        }
+
+        if (lastVolteAvailable != volteStateAvailable || lastIsNR != isNR || force) {
+            lastVolteAvailable = volteStateAvailable;
+            lastIsNR = isNR;
+            if (volteStateAvailable && VolteIconEnabled) {
+                Object iconToSet = isNR ? vonrStatusbarIconHolder : volteStatusbarIconHolder;
+                mPhoneStatusbarView.post(() -> {
+                    try {
+                        callMethod(mStatusBarIconController, "setIcon", VO_LTE_SLOT, iconToSet);
+                    } catch (Exception ignored) {
+                    }
+                });
+            } else {
+                removeSBIconSlot(VO_LTE_SLOT);
+            }
+        }
+
+        if (lastVowifiAvailable != voWifiAvailable || force) {
+            lastVowifiAvailable = voWifiAvailable;
+            if (voWifiAvailable && VowifiIconEnabled) {
+                mPhoneStatusbarView.post(() -> {
+                    try {
+                        callMethod(mStatusBarIconController, "setIcon", VO_WIFI_SLOT, vowifiStatusbarIconHolder);
+                    } catch (Exception ignored) {
+                    }
+                });
+            } else {
+                removeSBIconSlot(VO_WIFI_SLOT);
+            }
+        }
+    }
 
 	private void removeSBIconSlot(String slot) {
 		if (mPhoneStatusbarView == null) return; //probably it's too soon to have a statusbar

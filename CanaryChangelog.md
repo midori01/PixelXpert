@@ -1,22 +1,73 @@
-**canary-499**  
-- Reverted some unintentional changes  
+**canary-514**  
+- (Sync PixelXpert-Next canary-506)
   
-**canary-498**  
-- fixed compatibility with official LSposed. (For reasons unknown to me, they prefer to block remote activation. So, from now on, no automated activation for you: do it yourself. Do let me know if you managed to understand their mindset)  
+**canary-513**  
+- (Sync PixelXpert-Next canary-505)
   
-**canary-497**  
-- Fixed PX boot-looping in certain conditions  
+**canary-512**  
+- A17QPR2B4: Fix statusbar clock
   
-**canary-496**  
-- A17qpr1b4: Fixed icon transparency (I couldn't make a fix, but Gemini could!)  
+**canary-511**  
+- A17QPR2B4: Fix SystemUI crash
   
-**canary-495**  
-- A17QPR1b3: Fixed statusbar gestures  
-- A17QPR1b3: Fixed Screen gestures and related system UI crash  
-- Added option to hide navigation bar insets (Thanks to eXtreames@Github)  
+**canary-510**  
+- Archived [details](https://xdaforums.com/t/closed-mod-xposed-magisk-android-16-compatible-pixel-xpert-system-modifications-for-pixel-phones-12.4421743/post-90634455)
   
-**canary-494**  
-- A17b4 - Fixed physical button remap when screen is off  
+**canary-509**  
+- (Sync official canary-499)
+- Reverted some unintentional changes
+  
+**canary-508**  
+- (Sync official canary-497 canary-498)
+- Fixed PX boot-looping in certain conditions
+- fixed compatibility with official LSposed. (For reasons unknown to me, they prefer to block remote activation. So, from now on, no automated activation for you: do it yourself. Do let me know if you managed to understand their mindset)
+  
+**canary-507**  
+- (Sync official canary-496)
+- A17qpr1b4: Fixed icon transparency (I couldn't make a fix, but Gemini could!)
+  
+**canary-506**  
+- (Sync official canary-495)
+- A17QPR1b3: Fixed statusbar gestures
+- A17QPR1b3: Fixed Screen gestures and related system UI crash
+- Added option to hide navigation bar insets (Thanks to eXtreames@Github)
+  
+**canary-505**  
+- (Sync official canary-494)
+- A17b4 - Fixed physical button remap when screen is off
+  
+**​canary-504**  
+- ​Midori: Refined decimal formatting for byte conversion; implemented conditional logic to suppress decimal places for improved UI clarity.
+  
+**​canary-503**  
+- ​Midori: Standardized data representation to use a single decimal place; implemented a validation check to handle zero-value edge cases.
+  
+**​canary-502**  
+- ​Midori: Major overhaul of the status bar icon injection logic. IMS service icons (VoLTE/VoNR/VoWiFi) are now dynamically anchored to the cellular signal indicator for a native-level integration.
+  
+​**canary-501**  
+- Midori: Improved UI alignment; VoLTE/VoNR icons are now correctly positioned adjacent to the 4G/5G signal indicators instead of the far left.
+  
+**​canary-500**  
+- ​Midori: Fixed a signaling logic error where the VoNR icon would incorrectly display on 5G NSA (Non-Standalone) networks.
+  
+**​canary-499**  
+- Midori: ​Enhanced status persistence; VoLTE/VoNR icons now remain visible during active Wi-Fi sessions for continuous IMS registration monitoring.
+  
+**​canary-498**  
+- ​Midori: Migrated the application update distribution channel.
+  
+**​canary-497**  
+- Midori: ​Updated the module's remote update source for improved reliability.
+  
+**​canary-496**  
+- ​Midori: Resolved a state synchronization issue where VoLTE/VoNR icons failed to update during seamless 4G/5G RAT transitions.
+  
+**​canary-495**  
+- ​Midori: Implemented dedicated display logic and assets for the VoNR (Voice over New Radio) indicator.
+  
+**​canary-494**  
+- ​Midori: Fixed a regression where the VoLTE icon was missing specifically under 5G network environments.
   
 **canary-493**  
 - Fixing kill forground app (by pushing nexus launcher to work the way it should)  
