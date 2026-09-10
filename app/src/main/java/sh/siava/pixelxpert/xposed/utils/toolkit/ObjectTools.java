@@ -1,7 +1,5 @@
 package sh.siava.pixelxpert.xposed.utils.toolkit;
 
-
-
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
 import android.graphics.Color;
@@ -60,18 +58,18 @@ public class ObjectTools {
 		String unit;
 		if (bytes >= GIGA) {
 			unit = showInBits ? "Gb" : "GB";
-			decimalFormat = new DecimalFormat("0.00");
+			decimalFormat = new DecimalFormat("0.0");
 			formattedData = decimalFormat.format(bytes / (float) GIGA);
 		} else if (bytes >= 100 * MEGA) {
 			decimalFormat = new DecimalFormat("000");
 			unit = showInBits ? "Mb" : "MB";
 			formattedData = decimalFormat.format(bytes / (float) MEGA);
 		} else if (bytes >= 10 * MEGA) {
-			decimalFormat = new DecimalFormat("00.0");
+			decimalFormat = new DecimalFormat("00");
 			unit = showInBits ? "Mb" : "MB";
 			formattedData = decimalFormat.format(bytes / (float) MEGA);
 		} else if (bytes >= MEGA) {
-			decimalFormat = new DecimalFormat("0.00");
+			decimalFormat = new DecimalFormat("0.0");
 			unit = showInBits ? "Mb" : "MB";
 			formattedData = decimalFormat.format(bytes / (float) MEGA);
 		} else if (bytes >= 100 * KILO) {
@@ -79,14 +77,18 @@ public class ObjectTools {
 			unit = showInBits ? "Kb" : "KB";
 			formattedData = decimalFormat.format(bytes / (float) KILO);
 		} else if (bytes >= 10 * KILO) {
-			decimalFormat = new DecimalFormat("00.0");
+			decimalFormat = new DecimalFormat("00");
 			unit = showInBits ? "Kb" : "KB";
 			formattedData = decimalFormat.format(bytes / (float) KILO);
 		} else {
-			decimalFormat = new DecimalFormat("0.00");
+			decimalFormat = new DecimalFormat("0.0");
 			unit = showInBits ? "Kb" : "KB";
 			formattedData = decimalFormat.format(bytes / (float) KILO);
+			if ("0.0".equals(formattedData) || "0,0".equals(formattedData)) {
+				formattedData = "0";
+			}
 		}
+
 		spanSizeString = new SpannableString(formattedData);
 
 		if (textColor != null) {

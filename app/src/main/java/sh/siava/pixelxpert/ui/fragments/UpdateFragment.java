@@ -67,7 +67,7 @@ public class UpdateFragment extends BaseFragment {
 	private static final String updateRoot = String.format("%s/%s", MAGISK_UPDATE_DIR, MOD_NAME);
 
 	private static final String stableUpdatesURL = "https://raw.githubusercontent.com/siavash79/PixelXpert/stable/latestStable.json";
-	private static final String canaryUpdatesURL = "https://raw.githubusercontent.com/siavash79/PixelXpert/canary/latestCanary.json";
+	private static final String canaryUpdatesURL = "https://raw.githubusercontent.com/midori01/PixelXpert/canary/latestCanary.json";
 	DownloadManager downloadManager;
 	long downloadID = 0; //from download manager
 	static boolean canaryUpdate = BuildConfig.VERSION_NAME.toLowerCase().contains("canary");
