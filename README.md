@@ -18,9 +18,11 @@ We have decided to shutdown the project indefinitely ([details](https://xdaforum
 
 [![Telegram URL](https://img.shields.io/badge/Telegram-Join-2CA5E?style=social&logo=telegram)](https://t.me/PixelXpert_Github)
 
-![Header Image](https://github.com/siavash79/PixelXpert/blob/canary/.github/PixelXpert_Banner_1280.jpg?raw=true)
+<p align="center">
+  <img src="PixelXpert.svg" alt="PixelXpert Logo" width="200" height="200" />
+</p>
 
-This is a mixed Xposed+Magisk module, which is made to allow customizations that are not originally designed in AOSP (Android Open Source Project). Please read thorough below before reaching to download links
+This is a mixed Xposed+Magisk/KSU module, which is made to allow customizations that are not originally designed in AOSP (Android Open Source Project). Please read thorough below before reaching to download links
 <hr>
 
 ### **Features:**
@@ -48,14 +50,21 @@ Here is the compatibility chart according to different android versions and QPRs
 
 ### **Prerequisites:**
 - Compatible ROM (see Compatibility text above)
-- Device Rooted with Magisk 24.2+ or KSU
-- LSPosed (Zygisk Version preferred) (For Android 14+ use [LSPosed fork by JingMatrix](https://github.com/JingMatrix/LSPosed/releases))
+- Device Rooted with Magisk/KSU
+- If you're using KSU, you need to flash a metamodule like [Mountify](https://github.com/backslashxx/mountify/releases/latest) or [NoMount](https://github.com/maxsteeel/nomount/releases/latest)
+- LSPosed (Zygisk Version preferred) (For Android 14+ use [LSPosed fork (Vector) by JingMatrix](https://github.com/JingMatrix/Vector/releases)) or the [closed source LSPosed by the original team](https://lsposed.zip)
 <hr>
 
 ### **How to install:**
-- Download the stable magisk module according to your firmware as mentioned above 
-- Install in magisk/KSU
-- Reboot (no bootloops are expected)
+- Download the module according to your firmware as mentioned above
+- If you're using KSU, Flash a metamodule in KSU that has overlay support like [Mountify](https://github.com/backslashxx/mountify/releases/latest) or [NoMount](https://github.com/maxsteeel/nomount/releases/latest) [SKIP IF MAGISK!!!!]
+PS. You might need to configure your metamodule (in the case of Mountify, set `MOUNT_DEVICE_NAME` to `KSU` and ensure `mountify_mounts` is `2` and `mountify_custom_umount` is `0`)
+- Reboot
+- Flash PixelXpert in Magisk/KSU
+- Reboot
+- Grant root for PixelXpert in KSU (doesn’t automatically request) or Magisk (if it’s not already)
+- Enable PixelXpert in LSPosed if it isn’t already (ensure all the scopes are checked)
+- Preferably reboot
 - Open PixelXpert app and apply changes
 
 P.S. For KSU, there is an extra step of granting root access to PixelXpert as it doesn't request automatically as in Magisk
