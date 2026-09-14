@@ -37,6 +37,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import sh.siava.pixelxpert.R;
 import sh.siava.pixelxpert.xposed.XPLauncher;
@@ -85,13 +87,14 @@ public class NetworkTraffic extends FrameLayout {
 		NetworkTraffic.showInBits = showInBits;
 
 		lastParamUpdate = SystemClock.elapsedRealtime();
+		updateAll();
 	}
 
+	private static final List<WeakReference<NetworkTraffic>> allInstances = new ArrayList<>();
 	private static WeakReference<NetworkTraffic> SBInstance = null;
+	private static WeakReference<NetworkTraffic> KeyguardInstance = null;
+	private static boolean registeredTextColorCallback = false;
 	private static int SBTintColor;
-
-	private static WeakReference<NetworkTraffic> QSInstance = null;
-	private static int QSTintColor;
 
 	private final LinearLayout iconLayout;
 	protected boolean mAttached;
@@ -179,12 +182,26 @@ public class NetworkTraffic extends FrameLayout {
 		}
 	};
 
-	public static NetworkTraffic getInstance(Context context, boolean onStatusbar) {
-		WeakReference<NetworkTraffic> instance = (onStatusbar) ? SBInstance : QSInstance;
-		if (instance == null || instance.get() == null) {
-			new NetworkTraffic(context, onStatusbar);
+	public static synchronized NetworkTraffic getSBInstance(Context context) {
+		NetworkTraffic instance = SBInstance != null ? SBInstance.get() : null;
+		if (instance == null) {
+			instance = new NetworkTraffic(context, true);
+			SBInstance = new WeakReference<>(instance);
 		}
-		return (onStatusbar) ? SBInstance.get() : QSInstance.get();
+		return instance;
+	}
+
+	public static synchronized NetworkTraffic getKeyguardInstance(Context context) {
+		NetworkTraffic instance = KeyguardInstance != null ? KeyguardInstance.get() : null;
+		if (instance == null) {
+			instance = new NetworkTraffic(context, true);
+			KeyguardInstance = new WeakReference<>(instance);
+		}
+		return instance;
+	}
+
+	public static NetworkTraffic getInstance(Context context, boolean onStatusbar) {
+		return getSBInstance(context);
 	}
 
 	private void hide(boolean trafficRelated) {
@@ -242,15 +259,10 @@ public class NetworkTraffic extends FrameLayout {
 		mConnectivityManager = SystemUtils.ConnectivityManager();
 
 		isSBInstance = onStatusbar;
-		if (onStatusbar) {
-			SBInstance = new WeakReference<>(this);
+		allInstances.add(new WeakReference<>(this));
+		if (onStatusbar && !registeredTextColorCallback) {
+			registeredTextColorCallback = true;
 			setTintColor(StatusbarMods.registerTextColorCallback(textColor -> setTintColor(textColor, true)), true);
-			StatusbarMods.registerClockVisibilityCallback(visible -> {
-				if (visible) makeVisible(false);
-				else hide(false);
-			});
-		} else {
-			QSInstance = new WeakReference<>(this);
 		}
 	}
 
@@ -286,6 +298,10 @@ public class NetworkTraffic extends FrameLayout {
 					break;
 			}
 		}
+		int arrowSpacing = (showIcons && indicatorMode != MODE_SHOW_TOTAL)
+				? Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2.0f, mContext.getResources().getDisplayMetrics()))
+				: 0;
+		iconLayout.setPaddingRelative(0, 0, arrowSpacing, 0);
 		mTextView.setTextAlignment((indicatorMode == MODE_SHOW_RXTX) ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_CENTER);
 		int iconPadding = Math.round(Height * iconScaleFactor / 4);
 		iconR.setPadding(0, (RXonTop) ? 0 : iconPadding, 0, (RXonTop) ? iconPadding : 0);
@@ -351,7 +367,7 @@ public class NetworkTraffic extends FrameLayout {
 	}
 
 	protected void updateTrafficDrawable() {
-		int color = (isSBInstance) ? SBTintColor : QSTintColor;
+		int color = SBTintColor != 0 ? SBTintColor : Color.WHITE;
 		for (int i = 0; i < iconLayout.getChildCount(); i++) {
 			try {
 				((ImageView) iconLayout.getChildAt(i)).setColorFilter(color);
@@ -371,17 +387,24 @@ public class NetworkTraffic extends FrameLayout {
 	}
 
 	public static void setTintColor(int color, boolean isSBInstance) {
-		if ((SBTintColor != color && isSBInstance) || (QSTintColor != color && !isSBInstance)) {
-			if (isSBInstance) {
-				SBTintColor = color;
-				if (SBInstance != null && SBInstance.get() != null) {
-					SBInstance.get().updateTrafficDrawable();
-				}
+		SBTintColor = color;
+		for (int i = allInstances.size() - 1; i >= 0; i--) {
+			NetworkTraffic nt = allInstances.get(i).get();
+			if (nt != null) {
+				nt.updateTrafficDrawable();
 			} else {
-				QSTintColor = color;
-				if (QSInstance != null && QSInstance.get() != null) {
-					QSInstance.get().updateTrafficDrawable();
-				}
+				allInstances.remove(i);
+			}
+		}
+	}
+
+	public static void updateAll() {
+		for (int i = allInstances.size() - 1; i >= 0; i--) {
+			NetworkTraffic nt = allInstances.get(i).get();
+			if (nt != null) {
+				nt.update();
+			} else {
+				allInstances.remove(i);
 			}
 		}
 	}
