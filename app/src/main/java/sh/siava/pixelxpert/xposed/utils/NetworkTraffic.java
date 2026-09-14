@@ -286,6 +286,10 @@ public class NetworkTraffic extends FrameLayout {
 					break;
 			}
 		}
+		int arrowSpacing = (showIcons && indicatorMode != MODE_SHOW_TOTAL)
+				? Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2.5f, mContext.getResources().getDisplayMetrics()))
+				: 0;
+		iconLayout.setPaddingRelative(0, 0, arrowSpacing, 0);
 		mTextView.setTextAlignment((indicatorMode == MODE_SHOW_RXTX) ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_CENTER);
 		int iconPadding = Math.round(Height * iconScaleFactor / 4);
 		iconR.setPadding(0, (RXonTop) ? 0 : iconPadding, 0, (RXonTop) ? iconPadding : 0);

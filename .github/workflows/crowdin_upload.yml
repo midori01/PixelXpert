@@ -1,10 +1,6 @@
 name: Crowdin Upload
 
 on:
-  push:
-    branches: [ "canary" ]
-    paths:
-      - 'app/src/main/res/values/strings.xml'
   workflow_dispatch:
 
 jobs:
