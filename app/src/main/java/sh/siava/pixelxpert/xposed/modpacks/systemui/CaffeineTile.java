@@ -104,7 +104,10 @@ public class CaffeineTile extends XposedModPack {
 						Object state = param.args[0];
 
 						boolean isHeld = mWakeLock != null && mWakeLock.isHeld();
-						setObjectField(state, "value", isHeld);
+						try {
+							setObjectField(state, "value", isHeld);
+						} catch (NoSuchFieldError ignored) {
+						}
 						setObjectField(state, "state", isHeld ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
 
 						if (isHeld) {
