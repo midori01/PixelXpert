@@ -12,18 +12,18 @@
 
 # The entry point is loaded reflectively by the framework via
 # META-INF/xposed/java_init.list - it must never be renamed or stripped.
--keep class sh.anirudhgupta109.pxn.xposed.XPLauncher { *; }
--keep class * extends sh.anirudhgupta109.pxn.xposed.XposedModPack { *; }
+-keep class sh.siava.pixelxpert.xposed.XPLauncher { *; }
+-keep class * extends sh.siava.pixelxpert.xposed.XposedModPack { *; }
 
 # The generated registry (ModPacks) holds ::class.java references to every
 # pack and is read by XPLauncher. Keep the registry and its entry shape.
--keep class sh.anirudhgupta109.pxn.xposed.ModPacks { *; }
--keep class sh.anirudhgupta109.pxn.annotations.ModPackData { *; }
+-keep class sh.siava.pixelxpert.xposed.ModPacks { *; }
+-keep class sh.siava.pixelxpert.annotations.ModPackData { *; }
 
 # Whole xposed tree, matching legacy's `-keep class <pkg>.**`. Packs reach
 # framework and SystemUI internals by name; renaming our own members that
 # legacy call sites expect is not worth the obfuscation.
--keep class sh.anirudhgupta109.pxn.xposed.** { *; }
+-keep class sh.siava.pixelxpert.xposed.** { *; }
 
 # ---------------------------------------------------------------------------
 # libxposed API - provided at runtime by the framework, never packaged here
@@ -38,10 +38,10 @@
 # ---------------------------------------------------------------------------
 # AIDL - generated stubs are referenced across process boundaries
 # ---------------------------------------------------------------------------
--keep class sh.anirudhgupta109.pxn.IPixelXpertProxy { *; }
--keep class sh.anirudhgupta109.pxn.IPixelXpertProxy$Stub { *; }
--keep class sh.anirudhgupta109.pxn.IRootProviderService { *; }
--keep class sh.anirudhgupta109.pxn.IRootProviderService$Stub { *; }
+-keep class sh.siava.pixelxpert.IPixelXpertProxy { *; }
+-keep class sh.siava.pixelxpert.IPixelXpertProxy$Stub { *; }
+-keep class sh.siava.pixelxpert.IRootProviderService { *; }
+-keep class sh.siava.pixelxpert.IRootProviderService$Stub { *; }
 
 # ---------------------------------------------------------------------------
 # Kotlin runtime - strip intrinsics checks (mirrors legacy)
@@ -74,6 +74,6 @@
 # ---------------------------------------------------------------------------
 # Debug hook audit data models for Gson serialization/deserialization
 # ---------------------------------------------------------------------------
--keep class sh.anirudhgupta109.pxn.ui.debug.model.** { *; }
--keepclassmembers class sh.anirudhgupta109.pxn.ui.debug.model.** { *; }
+-keep class sh.siava.pixelxpert.ui.debug.model.** { *; }
+-keepclassmembers class sh.siava.pixelxpert.ui.debug.model.** { *; }
 -keep class androidx.core.content.FileProvider { *; }
