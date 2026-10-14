@@ -4,6 +4,10 @@
     <string name="app_themed_icon_title">其他主题图标</string>
     <string name="xposed_desc">自定义 Google Pixel 设备</string>
     <string name="volume_tile_title">媒体音量</string>
+    <string name="caffeine_tile_title">咖啡因</string>
+    <string name="high_brightness_flashlight_tile_title">高亮度手电筒</string>
+    <string name="enable_high_brightness_flashlight_title">高亮度手电筒</string>
+    <string name="enable_high_brightness_flashlight_summary">利用相机传感器突破系统允许的最高手电筒亮度（耗电量更高）</string>
     <string name="sliding_tile_subtitle">点击调整</string>
     <string name="app_switch_tile_title">Switch App Profile</string>
     <string name="hide_default">隐藏 (默认)</string>

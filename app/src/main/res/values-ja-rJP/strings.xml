@@ -4,6 +4,10 @@
     <string name="app_themed_icon_title">代替テーマのアイコン</string>
     <string name="xposed_desc">Google Pixelのみカスタマイズ可能</string>
     <string name="volume_tile_title">メディアの音量</string>
+    <string name="caffeine_tile_title">カフェイン</string>
+    <string name="high_brightness_flashlight_tile_title">高輝度フラッシュライト</string>
+    <string name="enable_high_brightness_flashlight_title">高輝度フラッシュライト</string>
+    <string name="enable_high_brightness_flashlight_summary">カメラを利用してシステム制限以上の明るさで点灯します（バッテリー消費が増加します）</string>
     <string name="sliding_tile_subtitle">タップして調整</string>
     <string name="app_switch_tile_title">アプリプロファイルを切り替える</string>
     <string name="hide_default">隠す (既定)</string>
