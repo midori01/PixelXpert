@@ -6,10 +6,10 @@
     <string name="google_settings_design_summary">Rounded search bar and colourful icons</string>
     <string name="xposed_desc">구글 픽셀용 커스텀마이징</string>
     <string name="volume_tile_title">미디어 볼륨</string>
-    <string name="caffeine_tile_title">Caffeine</string>
-    <string name="high_brightness_flashlight_tile_title">High Brightness Flashlight</string>
-    <string name="enable_high_brightness_flashlight_title">High Brightness Flashlight</string>
-    <string name="enable_high_brightness_flashlight_summary">Utilizes camera to reach higher brightness than what the system allows. Uses more power!</string>
+    <string name="caffeine_tile_title">카페인</string>
+    <string name="high_brightness_flashlight_tile_title">고휘도 손전등</string>
+    <string name="enable_high_brightness_flashlight_title">고휘도 손전등</string>
+    <string name="enable_high_brightness_flashlight_summary">카메라를 활용하여 시스템 허용치보다 높은 밝기로 켭니다 (배터리 소모가 증가합니다)</string>
     <string name="app_switch_tile_title">앱 프로필 바꾸기</string>
     <string name="hide_default">숨김 (기본값)</string>
     <string name="percent_of_default_size">% (기본값 대비)</string>

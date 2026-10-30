@@ -25,7 +25,7 @@
     <string name="notification_channel_update">Обновления</string>
     <string name="notification_channel_update_desc">На этом канале отображаются уведомления о последних обновлениях.</string>
     <string name="new_update_title">Доступно обновление</string>
-    <string name="new_update_desc">Доступна новая версия PixelXpert-Next</string>
+    <string name="new_update_desc">Доступна новая версия Pixel Xpert</string>
     <string name="skip_this_update">Пропустить это обновление</string>
     <string name="browser_not_found">Браузер не найден</string>
     <string name="settings_general_section_title">Общее</string>
@@ -54,7 +54,7 @@
     <string name="dialer_header">Телефон</string>
     <string name="dialer_header_summary">Небольшая помощь для телефонных звонков</string>
     <string name="misc_header">Разное</string>
-    <string name="misc_header_summary">Все, что еще предлагает PixelXpert-Next</string>
+    <string name="misc_header_summary">Все, что еще предлагает Pixel Xpert</string>
     <string name="qs_panel_category_title">Панель быстрых настроек</string>
     <string name="qs_panel_category_summary">Ползунок яркости, яркость фонарика и многое другое</string>
     <string name="theme_customization_category">Иконки и стили</string>
@@ -276,7 +276,7 @@
     <string name="three_button_right_title">Правая кнопка</string>
     <string name="hide_navbar_title">Скрыть панель жестов</string>
     <string name="hide_navbar_insets_title">Скрыть отступ панели жестов</string>
-    <string name="taskbar_as_recents_title">Преобразование панели задач в панель недавних PixelXpert-Next</string>
+    <string name="taskbar_as_recents_title">Преобразование панели задач в панель недавних Pixel Xpert</string>
     <string name="taskbar_enable_google_recents">Использовать недавние приложения Android на панели задач</string>
     <string name="taskbar_height_title">Высота панели задач</string>
     <string name="taskbar_radius_title">Угловой угол панели задач</string>
@@ -323,7 +323,7 @@
     <string name="force_aod_while_charging_title">Принудительный AOD во время зарядки</string>
     <string name="force_aod_while_charging_summary">Всегда включать AOD во время зарядки устройства</string>
     <string name="doze_header">Когда экран выключен…</string>
-    <string name="px_in_settings_title">Добавить PixelXpert-Next в меню настроек</string>
+    <string name="px_in_settings_title">Добавить Pixel Xpert в меню настроек</string>
     <string name="advanced_power_menu_title">Расширенное меню питания</string>
     <string name="sleep_on_flat_screen_title">Выключить экран на плоской поверхности</string>
     <string name="sleep_on_flat_screen_tile_title">Сон на поверхности</string>
@@ -423,7 +423,7 @@
     <string name="menu_updates">Обновление приложения</string>
     <string name="monitoring_category_title">Параметры мониторинга</string>
     <string name="netstat_header">Настройки сетевой статистики</string>
-    <string name="string_formatter_manual_body_v3">В дополнение к обычному тексту доступны динамические переменные, такие как дата, использование данных и температура:\n\n$G\&lt;format\&gt; : григорианская дата, основанная на формате*\n$P&lt;format&gt; : персидская дата, основанная на формате*\n$Nrx : Общее количество скачиваний за указанный период ** ***\n$Ntx: Всего загрузок за указанный период ** ***\n$Nall: Общий трафик за указанный период ** ***\n$Nssid: Имя WiFi SSID (если применимо)\n\n$T\&lt;format\&gt;[interval]: Температура; \nформат может быть b (для батареи), c (для CPU), g (для GPU) и s (для корпуса)\nИ наконец, есть ОПЦИОНАЛЬНОЕ количество интервалов обновления в секундах (по умолчанию: 60 секунд)\n\n*Для получения документации по формату ищите \"Java Date Format\"\n**Вы можете указать период статистики в PixelXpert-Next/Разное/Настройки сетевой статистики\n***Если вы замените $N на $Nc, то получите статистику по мобильным данным (например, $Ncrx вместо Nrx)</string>
+    <string name="string_formatter_manual_body_v3">В дополнение к обычному тексту доступны динамические переменные, такие как дата, использование данных и температура:\n\n$G\&lt;format\&gt; : григорианская дата, основанная на формате*\n$P&lt;format&gt; : персидская дата, основанная на формате*\n$Nrx : Общее количество скачиваний за указанный период ** ***\n$Ntx: Всего загрузок за указанный период ** ***\n$Nall: Общий трафик за указанный период ** ***\n$Nssid: Имя WiFi SSID (если применимо)\n\n$T\&lt;format\&gt;[interval]: Температура; \nформат может быть b (для батареи), c (для CPU), g (для GPU) и s (для корпуса)\nИ наконец, есть ОПЦИОНАЛЬНОЕ количество интервалов обновления в секундах (по умолчанию: 60 секунд)\n\n*Для получения документации по формату ищите \"Java Date Format\"\n**Вы можете указать период статистики в Pixel Xpert/Разное/Настройки сетевой статистики\n***Если вы замените $N на $Nc, то получите статистику по мобильным данным (например, $Ncrx вместо Nrx)</string>
     <string name="update_channel_name">Обновления</string>
     <string name="download_channel_name">Загрузки</string>
     <string name="assets_download_title">Загрузка файлов</string>
@@ -477,7 +477,7 @@
     <string name="hooked_packages_title">Подключенные пакеты</string>
     <string name="package_hooked_successful">Ответ пакета</string>
     <string name="package_not_hook_enabled">Пакет не включен в LSposed</string>
-    <string name="enable_px_manually">PixelXpert-Next ещё не активирован в LSposed. Откройте менеджер LSposed и включите PixelXpert-Next, затем перезапустите это приложение</string>
+    <string name="enable_px_manually">Pixel Xpert ещё не активирован в LSposed. Откройте менеджер LSposed и включите Pixel Xpert, затем перезапустите это приложение</string>
     <string name="package_hook_bootlooped">Перехват не удался из-за циклической перезагрузки</string>
     <string name="package_hook_no_response">Пакет не отвечает</string>
     <string name="package_not_found">Пакет не найден</string>
@@ -539,7 +539,7 @@
     <string name="icon_pack_info">Информация о наборе иконок</string>
     <string name="no_icon_pack_installed">Набор иконок не установлен</string>
     <string name="icon_pack_disclaimer_title">Оговорка</string>
-    <string name="icon_pack_disclaimer_desc">Пакеты иконок не разрабатываются и не распространяются PixelXpert-Next, поэтому команда PixelXpert-Next не может обеспечить поддержку наборов иконок. Поддержка того, как PixelXpert-Next обрабатывает наборы значков будет предоставляться только соответствующим разработчикам наборов.\n\nИнструкции по компиляции набора иконок см. в руководстве здесь: %s</string>
+    <string name="icon_pack_disclaimer_desc">Пакеты иконок не разрабатываются и не распространяются Pixel Xpert, поэтому команда Pixel Xpert не может обеспечить поддержку наборов иконок. Поддержка того, как Pixel Xpert обрабатывает наборы значков будет предоставляться только соответствующим разработчикам наборов.\n\nИнструкции по компиляции набора иконок см. в руководстве здесь: %s</string>
     <!--Advanced power options-->
     <string name="advanced_option_button_title">Дополнительно…</string>
     <string name="reboot_bootloader_title">Перезагрузить в Bootloader</string>
