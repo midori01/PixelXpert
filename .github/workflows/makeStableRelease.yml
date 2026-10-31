@@ -28,9 +28,6 @@ jobs:
 
     - name: Prepare px_files for Stable Build
       run: |
-        cp px_files/stable/module.prop MagiskModBase/module.prop
-        cp px_files/stable/MagiskModuleUpdate_Full.json MagiskModuleUpdate_Full.json || true
-        cp px_files/stable/MagiskModuleUpdate_Xposed.json MagiskModuleUpdate_Xposed.json || true
         cp px_files/latestStable.json latestStable.json || true
         cp px_files/StableChangelog.md MagiskChangelog.md || true
 
@@ -64,10 +61,9 @@ jobs:
       run: |
         NEWVERNAME=${GITHUB_REF_NAME#v}
         
-        sed -i 's|"zipUrl":.*|"zipUrl": "https://github.com/anirudhgupta109/PixelXpert-Next/releases/download/'$GITHUB_REF_NAME'/PixelXpert-Next.zip",|' MagiskModuleUpdate_Full.json || true
-        sed -i 's|"zipUrl":.*|"zipUrl": "https://github.com/anirudhgupta109/PixelXpert-Next/releases/download/'$GITHUB_REF_NAME'/PixelXpert-Next.zip",|' MagiskModuleUpdate_Xposed.json || true
-        sed -i 's|"zipUrl":.*|"zipUrl": "https://github.com/anirudhgupta109/PixelXpert-Next/releases/download/'$GITHUB_REF_NAME'/PixelXpert-Next.zip",|' latestStable.json || true
-        sed -i 's|"zipUrl_Xposed":.*|"zipUrl_Xposed": "https://github.com/anirudhgupta109/PixelXpert-Next/releases/download/'$GITHUB_REF_NAME'/PixelXpert-Next.zip"|' latestStable.json || true
+        sed -i 's|"apkUrl":.*|"apkUrl": "https://github.com/midori01/PixelXpert/releases/download/'$GITHUB_REF_NAME'/PixelXpert.apk",|' latestStable.json || true
+        sed -i 's|"zipUrl":.*|"zipUrl": "https://github.com/midori01/PixelXpert/releases/download/'$GITHUB_REF_NAME'/PixelXpert.apk",|' latestStable.json || true
+        sed -i 's|"zipUrl_Xposed":.*|"zipUrl_Xposed": "https://github.com/midori01/PixelXpert/releases/download/'$GITHUB_REF_NAME'/PixelXpert.apk"|' latestStable.json || true
         
         echo "**$NEWVERNAME**  " > newChangeLog.md
         cat .github/workflowFiles/FutureChanageLog.md >> newChangeLog.md
@@ -84,18 +80,18 @@ jobs:
         echo "Changelog:" >> telegram.msg
         cat .github/workflowFiles/FutureChanageLog.md >> telegram.msg
         echo "" >> telegram.msg
-        echo "URL: https://github.com/anirudhgupta109/PixelXpert-Next/releases/tag/$GITHUB_REF_NAME" >> telegram.msg
+        echo "URL: https://github.com/midori01/PixelXpert/releases/tag/$GITHUB_REF_NAME" >> telegram.msg
         
         echo 'TMessage<<EOF' >> $GITHUB_ENV
         cat telegram.msg >> $GITHUB_ENV
         echo >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
 
-    - name: Upload Xposed Artifact to Actions
+    - name: Upload APK Artifact to Actions
       uses: actions/upload-artifact@v7.0.1
       with: 
-        name: PixelXpert-Next.zip
-        path: output
+        name: PixelXpert.apk
+        path: output/PixelXpert.apk
 
     - name: Stable Binary Release
       uses: ncipollo/release-action@v1.21.0
@@ -104,14 +100,11 @@ jobs:
         name: ${{ github.ref_name }}
         prerelease: false
         draft: false
-        artifacts: 'output/*.*'
+        artifacts: 'output/*.apk'
         bodyFile: 'releaseNotes.md'
 
     - name: Update px_files branch for Stable
       run: |
-        cp MagiskModBase/module.prop px_files/stable/module.prop
-        cp MagiskModuleUpdate_Full.json px_files/stable/MagiskModuleUpdate_Full.json || true
-        cp MagiskModuleUpdate_Xposed.json px_files/stable/MagiskModuleUpdate_Xposed.json || true
         cp latestStable.json px_files/latestStable.json || true
         cp MagiskChangelog.md px_files/StableChangelog.md || true
         

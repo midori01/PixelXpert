@@ -1,11 +1,6 @@
 name: Make Canary Release
 
 on:
-  push:
-    branches:
-      - 'main'
-    paths:
-      - '.github/edit2MakeNewCanary'
   workflow_dispatch:
 
 jobs:
@@ -17,30 +12,13 @@ jobs:
 
     steps:
     - name: Source Code Download
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        submodules: recursive
-
-    - name: Download px_files branch
-      uses: actions/checkout@v4
-      with:
-        ref: px_files
-        path: px_files
-        
-    - name: Prepare px_files for Canary Build
-      run: |
-        cp px_files/canary/module.prop MagiskModBase/module.prop
-        cp px_files/canary/MagiskModuleUpdate_Full.json MagiskModuleUpdate_Full.json || true
-        cp px_files/canary/MagiskModuleUpdate_Xposed.json MagiskModuleUpdate_Xposed.json || true
-        cp px_files/latestCanary.json latestCanary.json || true
-        cp px_files/CanaryChangelog.md CanaryChangelog.md || true
-
+      run: git clone --branch canary-next --single-branch --recurse-submodules https://github.com/midori01/PixelXpert.git .
+      
     - name: JDK 21 Setup
       uses: actions/setup-java@v5.2.0
       with:
         java-version: '21'
-        distribution: 'jetbrains'
+        distribution: 'temurin'
         cache: gradle
 
     - name: Gradlew Permissions
@@ -59,6 +37,14 @@ jobs:
     - name: Gradle Build
       run: ./gradlew buildCanary -Pchannel=canary
 
+    - name: Verify Output Artifact
+      run: |
+        mkdir -p output
+        if [ ! -f output/PixelXpert.apk ]; then
+          find app/build/outputs/apk -name "*.apk" -exec cp -f {} output/PixelXpert.apk \; || true
+        fi
+        ls -la output/
+
     - name: Shell Scripts Permissions
       run: chmod +x .github/*.sh
 
@@ -68,73 +54,32 @@ jobs:
     - name: Version Bump
       run: .github/prepareCanaryChangelog.sh ${{ github.run_id }}
 
-    - name: Upload Xposed Artifact to Actions
+    - name: Upload APK Artifact to Actions
       uses: actions/upload-artifact@v7.0.1
       with: 
-        name: PixelXpert-Next.zip
-        path: output
+        name: PixelXpert.apk
+        path: output/PixelXpert.apk
 
     - name: Canary Binary Release
       uses: ncipollo/release-action@v1.21.0
       with:
+        token: ${{ secrets.GITHUB_TOKEN }}
         tag: 'canary_builds'
         name: 'Latest Canary'
         omitBodyDuringUpdate: true
-        prerelease: true
+        prerelease: false
         allowUpdates: true
         replacesArtifacts: true
         draft: false
-        artifacts: 'output/*.*'
-
-    - name: Update px_files branch for Canary
-      run: |
-        cp MagiskModBase/module.prop px_files/canary/module.prop
-        cp MagiskModuleUpdate_Full.json px_files/canary/MagiskModuleUpdate_Full.json || true
-        cp MagiskModuleUpdate_Xposed.json px_files/canary/MagiskModuleUpdate_Xposed.json || true
-        cp latestCanary.json px_files/latestCanary.json || true
-        cp CanaryChangelog.md px_files/CanaryChangelog.md || true
-        
-        cd px_files
-        VERSION=$(grep -i "VERSION_NAME" ../version.properties | cut -d '=' -f 2 | tr -d ' \r')
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
-        git add .
-        git diff-index --quiet HEAD || git commit -m "${VERSION}: ${{ github.sha }}: Update release files"
-        git push origin px_files
+        artifacts: 'output/*.apk'
 
     - name: Version Bump Commit
       uses: github-actions-x/commit@v2.9
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        push-branch: 'main'
-        commit-message: 'Version update: Release [skip ci]'
+        push-branch: 'canary-next'
+        commit-message: 'Version update: Release'
         force-add: 'true'
-        files: version.properties
-        name: GitHub
-        email: PixelXpert@siava.sh
-
-    - name: Telegram Channel Post
-      uses: appleboy/telegram-action@master
-      if: env.TMessage != ''
-      with:
-        to: ${{ secrets.AOSPMODS_CHANNEL_ID }}
-        token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: ${{ env.TMessage }}
-
-    - name: Get Canary Version for SourceForge
-      run: |
-        VERSION=$(grep -i "VERSION_NAME" version.properties | cut -d '=' -f 2 | tr -d ' \r')
-        echo "SF_VERSION=$VERSION" >> $GITHUB_ENV
-
-    - name: SourceForge Upload
-      continue-on-error: true
-      env:
-        SF_KEY: ${{ secrets.SF_KEY }}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$SF_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan frs.sourceforge.net >> ~/.ssh/known_hosts
-        ssh anirudhgupta109@frs.sourceforge.net mkdir -p /home/frs/project/agbuilds/PixelXpert-Next/${{ env.SF_VERSION }}/ || true
-        rsync -avP -e ssh output/* anirudhgupta109@frs.sourceforge.net:/home/frs/project/agbuilds/PixelXpert-Next/${{ env.SF_VERSION }}/
-
+        files: version.properties latestVersion.json CanaryChangelog.md latestCanary.json
+        name: midori01
+        email: midori01@users.noreply.github.com
