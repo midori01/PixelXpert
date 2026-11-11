@@ -20,7 +20,7 @@ dependencyResolutionManagement {
 	}
 }
 
-rootProject.name = "PixelXpert-Next"
+rootProject.name = "PixelXpert"
 
 // :modPackProcessor is a sibling module because KSP cannot load a processor
 // from the module it processes.

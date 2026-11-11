@@ -19,11 +19,11 @@ plugins {
 apply(from = rootProject.file("app/PXTasks.gradle.kts"))
 
 android {
-	namespace = "sh.anirudhgupta109.pxn"
+	namespace = "sh.siava.pixelxpert"
 	compileSdk = 37
 
 	defaultConfig {
-		applicationId = "sh.anirudhgupta109.pxn"
+		applicationId = "sh.siava.pixelxpert"
 		minSdk = 37
 		targetSdk = 37
 
@@ -108,12 +108,11 @@ kotlin {
 }
 
 androidComponents {
-	val apkName = "PixelXpert-Next.apk"
+	val apkName = "PixelXpert.apk"
 
 	onVariants { variant ->
-		// createZip (app/PXTasks.gradle.kts) picks the release APK up by this
-		// exact name, so assembleRelease itself has to emit it. Renaming only
-		// inside a bespoke build task would leave the Magisk zip empty.
+		// copyApk (app/PXTasks.gradle.kts) picks the release APK up by this
+		// exact name, so assembleRelease itself has to emit it.
 		val artifactDir = variant.artifacts.get(SingleArtifact.APK)
 		val versionName = getVersionName()
 

@@ -3,10 +3,10 @@ The original project was shutdown and this repository was created to continue th
 
 
 ### For Pixel Stock Android 17 and newer:  
-[![Latest Release](https://img.shields.io/github/v/release/anirudhgupta109/PixelXpert-Next?color=green&include_prereleases&label=Download%20Latest%20Stable)](https://github.com/anirudhgupta109/PixelXpert-Next/releases/latest)
-[![Latest Canary Release](https://img.shields.io/badge/Download%20Latest-Canary-blue)](https://github.com/anirudhgupta109/PixelXpert-Next/releases/tag/canary_builds)
+[![Latest Release](https://img.shields.io/github/v/release/midori01/PixelXpert?color=green&include_prereleases&label=Download%20Latest%20Stable)](https://github.com/midori01/PixelXpert/releases/latest)
+[![Latest Canary Release](https://img.shields.io/badge/Download%20Latest-Canary-blue)](https://github.com/midori01/PixelXpert/releases/tag/canary_builds)
 
-![Downloads - Stable channel](https://img.shields.io/github/downloads/anirudhgupta109/PixelXpert-Next/total?color=red&label=Downloads%20-%20Stable%20Channel)
+![Downloads - Stable channel](https://img.shields.io/github/downloads/midori01/PixelXpert/total?color=red&label=Downloads%20-%20Stable%20Channel)
 
 ### For Older Pixel Stock builds:
 Refer to [The original project](https://github.com/siavash79/PixelXpert#for-pixel-stock-android-12-and-13-up-to-nov-2022---aosp-13r8)
@@ -19,11 +19,11 @@ Refer to [The original project](https://github.com/siavash79/PixelXpert#for-pixe
   <img src="PixelXpert.svg" alt="PixelXpert Logo" width="200" height="200" />
 </p>
 
-This is a mixed Xposed+Magisk/KSU module, which is made to allow customizations that are not originally designed in AOSP (Android Open Source Project). Please read thorough below before reaching to download links
+This is a pure LSPosed module (distributed as a standalone APK), which is made to allow customizations that are not originally designed in AOSP (Android Open Source Project). Please read through below before reaching to download links
 <hr>
 
 ### **Features:**
-Currently, PixelXpert-Next offers customizations on different aspects of system framework and SystemUI, including:
+Currently, PixelXpert offers customizations on different aspects of system framework and SystemUI, including:
 - Status bar
 - Quick Settings panel
 - Lock screen
@@ -36,43 +36,37 @@ Currently, PixelXpert-Next offers customizations on different aspects of system 
 <hr>
 
 ### **Compatibility:**
-PixelXpert-Next is ONLY compatible with pixel stock firmware on Google Pixel devices. Any custom ROM (including PE, PE plus, pixel plus ui and etc) or stock ROM outside stock pixel firmware on Google pixel devices (e.g. OneUI on Samsung, MIUI on Xiaomi and etc) is not supported and may not be fully (or even at all) compatible.
+PixelXpert is ONLY compatible with pixel stock firmware on Google Pixel devices. Any custom ROM (including PE, PE plus, pixel plus ui and etc) or stock ROM outside stock pixel firmware on Google pixel devices (e.g. OneUI on Samsung, MIUI on Xiaomi and etc) is not supported and may not be fully (or even at all) compatible.
 
 Here is the compatibility chart according to different android versions and QPRs:
 
-- Android 17 newer: [latest stable version](https://github.com/anirudhgupta109/PixelXpert-Next/releases/latest)
+- Android 17 newer: [latest stable version](https://github.com/midori01/PixelXpert/releases/latest)
 - Android 16 (June 2022) and older Android Versions: [Refer to original project](https://github.com/siavash79/PixelXpert#compatibility).
 <hr>
 
 ### **Prerequisites:**
 - Compatible ROM (see Compatibility text above)
-- Device Rooted with Magisk/KSU
-- If you're using KSU, you need to flash a metamodule like [Mountify](https://github.com/backslashxx/mountify/releases/latest) or [NoMount](https://github.com/maxsteeel/nomount/releases/latest)
+- Device Rooted (KernelSU / APatch / Magisk)
 - LSPosed (Zygisk Version preferred) (For Android 14+ use [LSPosed fork (Vector) by JingMatrix](https://github.com/JingMatrix/Vector/releases)) or the [closed source LSPosed by the original team](https://lsposed.zip)
 <hr>
 
 ### **How to install:**
-- Download the module according to your firmware as mentioned above
-- If you're using KSU, Flash a metamodule in KSU that has overlay support like [Mountify](https://github.com/backslashxx/mountify/releases/latest) or [NoMount](https://github.com/maxsteeel/nomount/releases/latest) [SKIP IF MAGISK!!!!]
-PS. You might need to configure your metamodule (in the case of Mountify, set `MOUNT_DEVICE_NAME` to `KSU` and ensure `mountify_mounts` is `2` and `mountify_custom_umount` is `0`)
-- Reboot
-- Flash PixelXpert-Next in Magisk/KSU
-- Reboot
-- Grant root for PixelXpert-Next in KSU (doesn’t automatically request, it will be listed only when `Show System Apps` option is enabled from the three dot menu) or Magisk (if it’s not already)
-- Enable PixelXpert-Next in LSPosed if it isn’t already (ensure all the scopes are checked)
-- Preferably reboot
-- Open PixelXpert-Next app and apply changes
+- Download and install `PixelXpert.apk`
+- Enable PixelXpert in LSPosed (ensure required scopes like System UI and System Framework are checked)
+- Grant root access to PixelXpert in your root manager (KernelSU / APatch / Magisk)
+- Reboot or soft reboot System UI
+- Open PixelXpert app and enjoy customizing!
 
 <hr>
 
 ### **Release Variants:**  
-The module is also released in 2 flavors with different manual download and update procedures. But both can utilize automated updates through magisk manager, or through in-app updater (for canary, updates will not count against the module's download count).
+PixelXpert is available via in-app updater and GitHub Releases.
 
 <ins>Stable release:</ins> 
 - Manual Install/Update: through repository's Github release page (link below) AND through in-app updater
 
 <ins>Canary release:</ins>
-- Manual Install/Update: through repository's Actions page and [telegram channel](https://t.me/PixelXpert_Github) (latest version is available from [here](https://github.com/anirudhgupta109/PixelXpert-Next/releases/tag/canary_builds) also)
+- Manual Install/Update: through repository's Actions page and [telegram channel](https://t.me/PixelXpert_Github) (latest version is available from [here](https://github.com/midori01/PixelXpert/releases/tag/canary_builds) also)
 
 *No matter which flavor you're on, you can always switch to the other one with in-app updater
 <hr>
