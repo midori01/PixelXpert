@@ -6,7 +6,7 @@ tasks.register("buildCanary") {
 
 	finalizedBy("incrementCanaryVersion")
 		.finalizedBy("assembleRelease")
-		.finalizedBy("createZip")
+		.finalizedBy("copyApk")
 }
 
 tasks.register("buildStable") {
@@ -15,7 +15,7 @@ tasks.register("buildStable") {
 
 	finalizedBy("incrementStableVersion")
 		.finalizedBy("assembleRelease")
-		.finalizedBy("createZip")
+		.finalizedBy("copyApk")
 }
 
 tasks.register<IncrementVersionTask>("incrementCanaryVersion") {
@@ -27,10 +27,8 @@ tasks.register<IncrementVersionTask>("incrementCanaryVersion") {
 	stable.set(false)
 
 	filesToUpdate.from(
-		rootProject.file("MagiskModBase/module.prop"),
 		rootProject.file("latestCanary.json"),
-		rootProject.file("MagiskModuleUpdate_Xposed.json"),
-		rootProject.file("MagiskModuleUpdate_Full.json"),
+		rootProject.file("latestVersion.json"),
 	)
 	targetVersionName.set(getVersionName())
 }
@@ -42,26 +40,20 @@ tasks.register<IncrementVersionTask>("incrementStableVersion") {
 	versionFile.set(rootProject.file("version.properties"))
 	stable.set(true)
 	filesToUpdate.from(
-		rootProject.file("MagiskModBase/module.prop"),
 		rootProject.file("latestStable.json"),
-		rootProject.file("MagiskModuleUpdate.json"),
-		rootProject.file("MagiskModuleUpdate_Full.json"),
-		rootProject.file("MagiskModuleUpdate_Xposed.json"),
+		rootProject.file("latestVersion.json")
 	)
 	targetVersionName.set(getVersionName())
 }
 
-tasks.register<Zip>("createZip") {
+tasks.register<CopyApkTask>("copyApk") {
 	group = taskGroup
-	description = "Creates the final Magisk module file"
+	description = "Copies the release APK to the output directory"
 
 	mustRunAfter("incrementCanaryVersion")
 	mustRunAfter("incrementStableVersion")
 	mustRunAfter("assembleRelease")
 
-	from(file("../MagiskModBase"))
-	from(file("build/outputs/apk/release/PixelXpert-Next.apk")) { into("") }
-
-	destinationDirectory.set(file("../output"))
-	archiveFileName.set("PixelXpert-Next.zip")
+	apkDir.set(layout.buildDirectory.dir("outputs/apk/release"))
+	outputDir.set(rootProject.layout.projectDirectory.dir("output"))
 }

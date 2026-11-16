@@ -13,7 +13,7 @@ echo "" >> telegram.msg
 echo "Changelog:" >> telegram.msg
 cat changeLog.md >> telegram.msg
 echo "" >> telegram.msg
-echo "URL: https://github.com/anirudhgupta109/PixelXpert-Next/releases/tag/canary_builds" >> telegram.msg
+echo "URL: https://github.com/midori01/PixelXpert/releases/tag/canary_builds" >> telegram.msg
 echo 'TMessage<<EOF' >> $GITHUB_ENV
 cat telegram.msg >> $GITHUB_ENV
 echo 'EOF' >> $GITHUB_ENV
